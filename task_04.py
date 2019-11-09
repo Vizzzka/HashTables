@@ -1,6 +1,8 @@
 import math
 
 
+# pre processing
+
 resheto = [True for _ in range(100000 + 5)]
 
 primes_numbers = []
@@ -88,11 +90,11 @@ class HashFunctionDivide:
 
 
 class HashFunctionMultiply:
+    A = (math.sqrt(5) - 1) / 2
 
     def __init__(self, n):
         self.n = n
         self.m = self.count_size()
-        self.A = (math.sqrt(5) - 1) / 2
 
     def count_size(self):
         res = 1
@@ -136,6 +138,7 @@ class OpenAddressHashTable(HashTableInterface):
         self.size = hash_func_obj.get_size()
         self.hash_func = hash_func_obj.open_hash
         self.table = [None for _ in range(self.size)]
+        self.deleted = [False for _ in range(self.size)]
         self.__collisions_amount = 0
 
         for value in values:
@@ -145,8 +148,9 @@ class OpenAddressHashTable(HashTableInterface):
         i = 0
         while i < self.size:
             j = self.hash_func(value, i)
-            if not self.table[j]:
+            if self.table[j] is None or self.deleted[j]:
                 self.table[j] = value
+                self.deleted[j] = False
                 return j
             i += 1
             self.__collisions_amount += 1
@@ -157,7 +161,7 @@ class OpenAddressHashTable(HashTableInterface):
         while i < self.size:
             j = self.hash_func(value, i)
             if self.table[j] == value:
-                self.table[j] = None
+                self.deleted[j] = True
                 return j
             i += 1
         return -1
@@ -167,7 +171,7 @@ class OpenAddressHashTable(HashTableInterface):
         col = 0
         while i < self.size:
             j = self.hash_func(value, i)
-            if self.table[j] == value:
+            if self.table[j] == value and not self.deleted[j]:
                 col += 1
             i += 1
         return col
@@ -244,6 +248,6 @@ class HashTable:
 
 
 if __name__ == "__main__":
-    ex = HashTable(5, [2, 4, 4, 5, 10, 17])
+    ex = HashTable(4, [2, 4, 4, 5, 10, 17])
     print(ex.get_collisions_amount())
     print(ex.find_sum(8))
