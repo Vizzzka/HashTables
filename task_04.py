@@ -3,7 +3,7 @@ import math
 
 # pre processing
 
-resheto = [True for _ in range(100000 + 5)]
+resheto = [True for _ in range(200009 + 5)]
 
 primes_numbers = []
 for i in range(2, len(resheto)):
@@ -35,12 +35,11 @@ class LinkedList:
 
     def search(self, value):
         prob = self.head
-        col = 0
         while prob:
             if prob.value == value:
-                col += 1
+                return 1
             prob = prob.next
-        return col
+        return 0
 
     def delete(self, value):
         self.size -= 1
@@ -79,8 +78,12 @@ class HashFunctionDivide:
     def count_size(self):
         primes = primes_numbers
         for p in primes:
+            if p > self.n * 3:
+                break
             if p > self.n:
-                return p
+                res = p
+
+        return res
 
     def get_size(self):
         return self.m
@@ -164,17 +167,20 @@ class OpenAddressHashTable(HashTableInterface):
                 self.deleted[j] = True
                 return j
             i += 1
+            if self.table[j] is None or self.deleted[j]:
+                return -1
         return -1
 
     def search(self, value):
         i = 0
-        col = 0
         while i < self.size:
             j = self.hash_func(value, i)
             if self.table[j] == value and not self.deleted[j]:
-                col += 1
+                return 1
             i += 1
-        return col
+            if self.table[j] is None or self.deleted[j]:
+                return 0
+        return 0
 
     def get_collisions_amount(self):
         return self.__collisions_amount
@@ -235,13 +241,6 @@ class HashTable:
     def find_sum(self, s):
         for value in self.__hash_table.values:
             value2 = s - value
-            # if sum consists of two equal values
-            if value == value2:
-                if self.__hash_table.search(value) > 1:
-                    return value, value2
-                continue
-
-            # if sum consists of two different values
             if self.__hash_table.search(value2):
                 return value, value2
         return None

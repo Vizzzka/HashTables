@@ -1,6 +1,8 @@
-# pre processing
+import math
 
-resheto = [True for _ in range(100000 + 5)]
+
+# pre processing
+resheto = [True for _ in range(200009 + 5)]
 
 primes_numbers = []
 for i in range(2, len(resheto)):
@@ -19,8 +21,12 @@ class HashFunctionDivide:
     def count_size(self):
         primes = primes_numbers
         for p in primes:
+            if p > self.n * 3:
+                break
             if p > self.n:
-                return p
+                res = p
+
+        return res
 
     def get_size(self):
         return self.m

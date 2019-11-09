@@ -1,4 +1,3 @@
-
 class Node:
     def __init__(self, value, next=None, prev=None):
         self.value = value
@@ -21,12 +20,11 @@ class LinkedList:
 
     def search(self, value):
         prob = self.head
-        col = 0
         while prob:
             if prob.value == value:
-                col += 1
+                return 1
             prob = prob.next
-        return col
+        return 0
 
     def delete(self, value):
         self.size -= 1

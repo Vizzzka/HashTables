@@ -44,17 +44,20 @@ class OpenAddressHashTable(HashTableInterface):
                 self.deleted[j] = True
                 return j
             i += 1
+            if self.table[j] is None or self.deleted[j]:
+                return -1
         return -1
 
     def search(self, value):
         i = 0
-        col = 0
         while i < self.size:
             j = self.hash_func(value, i)
             if self.table[j] == value and not self.deleted[j]:
-                col += 1
+                return 1
             i += 1
-        return col
+            if self.table[j] is None or self.deleted[j]:
+                return 0
+        return 0
 
     def get_collisions_amount(self):
         return self.__collisions_amount
