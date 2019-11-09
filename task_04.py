@@ -227,7 +227,7 @@ class HashTable:
         if hash_type == 4:
             self.__hash_table = OpenAddressHashTable(values, HashFunctionOpenQuadratic(len(values)))
         if hash_type == 5:
-            self.__hash_table = OpenAddressHashTable(values, HashFunctionOpenQuadratic(len(values)))
+            self.__hash_table = OpenAddressHashTable(values, HashFunctionOpenDouble(len(values)))
 
     def get_collisions_amount(self):
         return self.__hash_table.get_collisions_amount()
